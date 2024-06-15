@@ -65,5 +65,7 @@ def processImages(imgDirectory: str, saveDirectory: str = os.getcwd(), returnDF:
 
     if returnDF: return df
 
-processImages(r"C:\Users\zwale\Desktop\Programming\Python\ImagingProject\testMasks",
-              r"C:\Users\zwale\Desktop\Programming\Python\ImagingProject\submit")
+# processImages('path/to/img/folder', 'path/to/save/folder')
+
+processImages(r"C:\Users\Ostoehr\Desktop\Programming\Python\224_B-Final\testMasks",
+              r"C:\Users\Ostoehr\Desktop\Programming\Python\224_B-Final\submit")

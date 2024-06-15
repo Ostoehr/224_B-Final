@@ -1,18 +1,16 @@
-from random import random
 
+from random import random
 import numpy as np
 import os as os
-
-from matplotlib import pyplot as plt
 import tensorflow as tf
-
 os.environ["SM_FRAMEWORK"] = "tf.keras"
 import segmentation_models as sm
 import cv2
 import glob
 from tensorflow import keras
+import matplotlib.pyplot as plt
 
-
+# Define a function to display images
 def display(display_list):
     plt.figure(figsize=(15, 15))
     title = ["Input Image", "Predicted Mask"]
@@ -23,10 +21,10 @@ def display(display_list):
         plt.axis("off")
     plt.show()
 
-
-BACKBONE = 'resnet18'                                                          # try a couple of different backbones and see what works the best
+# Define backbone for U-net and get preprocessing function
+BACKBONE = 'resnet18'                                                          
 preprocess_input = sm.get_preprocessing(BACKBONE)
-
+# Put test images into an array (correct relative path if needed)
 test_images = []
 image_paths = []
 for directory_path in glob.glob("testImages/testImages"):
@@ -37,11 +35,12 @@ for directory_path in glob.glob("testImages/testImages"):
 
 test_images = np.array(test_images)
 # Preprocess the test images
-# test_images = preprocess_input(test_images)        # is this necessary:?
+test_images = preprocess_input(test_images)
 # Load the trained model
 model = keras.models.load_model('test.h5', compile=False)
 
-os.chdir(r"C:\Users\zwale\Desktop\Programming\Python\ImagingProject\testMasks")
+# Change the current working directory to a directory to store the predicted masks
+os.chdir(r"C:\Users\ostoehr\Desktop\Programming\Python\224_B-Final\testMasks")
 X = 0
 # Make predictions on the test images
 predicted = model.predict(test_images)
@@ -49,6 +48,7 @@ predicted = model.predict(test_images)
 # images = predicted.numpy()
 print(len(predicted))
 display([test_images[0], predicted[0]])
+
 # Ensure the data type of the array is uint8
 images = (predicted * 255).astype(np.uint8)
 # Iterate over the images in the batch
